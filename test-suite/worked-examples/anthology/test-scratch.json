@@ -1,0 +1,18 @@
+{
+	"ANTHOLOGY": { 
+	"meta": { },
+	"pieces": [ {
+	    "verse": {
+	        "type": "",
+	        "lines": {"RICHTEXT": ""},
+	        "stanzas": {
+	            "type": "",
+	            "lines": {"RICHTEXT": ""}
+	        }
+	    } },
+	    { "prose": "" },
+	    { "include": { "lang": "en",
+	    "yougotit": "oya" } }
+	    ]
+	}
+	}
