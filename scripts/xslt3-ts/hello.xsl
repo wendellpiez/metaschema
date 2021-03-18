@@ -2,8 +2,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     version="3.0">
     
-    <xsl:template match="/*">
-        <h1>Hello World!</h1>
+    <xsl:param name="greeting">Hello</xsl:param>
+
+    <xsl:template match="/*" expand-text="true">
+        <h1>{ $greeting } World!</h1>
     </xsl:template>
     
 </xsl:stylesheet>
