@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "xslt-js",
+			"label": "Apply demo.xsl XSLT",
+			"nodeModulesFolder": "node_modules",
+			"xsltFile":   "${command:extension.vscode-wsl-workspaceFolder}/src/demo.xsl",
+			"xmlSource":  "${command:extension.vscode-wsl-workspaceFolder}/${relativeFile}",
+			"resultPath": "${command:extension.vscode-wsl-workspaceFolder}/${relativeFileDirname}/${fileBasenameNoExtension}-result.xml",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"problemMatcher": [
+				"$saxon-xslt-js"
+			]
+		}
+	]
+}

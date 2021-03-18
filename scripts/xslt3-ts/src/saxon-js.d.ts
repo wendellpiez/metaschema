@@ -1,0 +1,1 @@
+declare module 'saxon-js/SaxonJS2N.js';
