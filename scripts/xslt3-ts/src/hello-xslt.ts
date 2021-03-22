@@ -27,7 +27,7 @@ SaxonJS.transform({
     sourceFileName: sourceXML,
     /*sourceText: helloString, - for testing */
     /*destination: "serialized",  - pick up from htmlout.principalResult */
-    destination: "stdout",
+    destination: "stdout"
     /* to write to file:
      * destination: "file",
      * baseOutputURI: resultFile*/
