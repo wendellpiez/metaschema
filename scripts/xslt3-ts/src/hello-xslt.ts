@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env node
 
 // import * as SaxonJS from "../node_modules/saxon-js/SaxonJS2N.js";
-import {SaxonJS} from "saxon-js/SaxonJS2N.js";
+import * as SaxonJS from "saxon-js/SaxonJS2N.js";
 
 const workingDir: string = process.cwd()
 
@@ -12,7 +12,7 @@ const nameIn: string = process.argv[2]
 
 /*
  * CL to compile hello-world.xsl as hello.sef.json
- * xslt3 - t - xsl: hello-world.xsl -export: hello.sef.json - nogo
+ * xslt3 -t -xsl: hello-world.xsl -export: hello.sef.json -nogo
 */
 
 let sourceXML: string = `${workingDir}/${nameIn}`
