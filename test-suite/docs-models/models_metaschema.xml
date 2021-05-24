@@ -69,7 +69,7 @@
             </field>
             
             <field ref="wrapped-prose" in-xml="WITH_WRAPPER"/>
-            <field ref="loose-prose"   in-xml="UNWRAPPED"/>
+            <!--<field ref="loose-prose"   in-xml="UNWRAPPED"/>-->
             
             <assembly ref="assembly-with-inlines"/>
             

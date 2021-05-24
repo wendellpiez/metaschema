@@ -100,12 +100,12 @@
          
          <xsl:apply-templates mode="#current" select="description"/>
          
-         <!--<xsl:variable name="potential-constraints" select="$constraints,constraint"/>-->
+         <xsl:variable name="potential-constraints" select="$constraints,constraint"/>
          
          <!-- Visiting the constraints passed down from above, with $apply-to as the node applying -->
-         <!--<xsl:apply-templates select="$potential-constraints" mode="produce-matching-constraints">
-            <xsl:with-param name="applying-to" select="."/>
-         </xsl:apply-templates>-->
+         <xsl:apply-templates select="$potential-constraints" mode="produce-matching-constraints">
+            <xsl:with-param name="applying-to" select="." tunnel="true"/>
+         </xsl:apply-templates>
          
          <xsl:if test="exists(remarks)">
             <details open="open" class="remarks-group">

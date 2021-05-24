@@ -55,18 +55,19 @@
       </ul>
    </xsl:template>
    
-   <xsl:template match="section" mode="toc">
-     <xsl:variable name="head" select="*[starts-with(@class,'toc')] | *[@class='definition-header']/*[starts-with(@class,'toc')]"/>
-            <li>
-               <xsl:for-each select="$head" expand-text="true">
-                  <p><a href="#{ $head/@id }">{ . }</a></p>
-               </xsl:for-each>
-               <xsl:where-populated>
-                  <xsl:call-template name="toc-level"/>
-               </xsl:where-populated>
-            </li>
-   </xsl:template>
-     
+  <xsl:template match="section" mode="toc">
+    <xsl:variable name="head" select="child::div[@class='header']/*[contains-token(@class,'head')]"/>
+    <li>
+      <xsl:for-each select="$head" expand-text="true">
+        <p>
+          <a href="#{ $head/@id }">{ . }</a>
+        </p>
+      </xsl:for-each>
+      <xsl:where-populated>
+        <xsl:call-template name="toc-level"/>
+      </xsl:where-populated>
+    </li>
+  </xsl:template>
    
    <xsl:template match="h1 | h2 | h3 | h4 | h5 | h6" priority="10">
       <xsl:copy>

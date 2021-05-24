@@ -10,8 +10,6 @@
 
     <xsl:output indent="yes"/>
 
-    <xsl:mode on-no-match="shallow-skip"/>
-
 <!-- 1. reduce target paths to their minimized form accounting for axes, removing predicates etc.
           cast wildcards 'node()' 'element()' and 'attribute' to '*'
           normalize away child:: and attribute::
@@ -82,7 +80,7 @@
         <xsl:param name="context-path" as="xs:string"/><!-- a/b/c -->
         <xsl:param name="target-expr"  as="xs:string"/><!-- a[1]/b/c[3] | d/e[$n]/f -->
         <xsl:sequence select="some $t in m:express-targets($target-expr) satisfies
-            m:match-paths($t,$context-path)"/>
+            m:match-paths($context-path,$t)"/>
     </xsl:function>
     
     <xsl:function name="m:match-paths" as="xs:boolean">
@@ -112,7 +110,7 @@
     <xsl:template mode="refine-path" priority="2" match="m:step[m:axis='self']"/>
     <xsl:template mode="refine-path" priority="2" match="m:step[empty(*)]"/>
     
-    <xsl:template mode="refine-path" match="m:step" as="xs:string">
+    <xsl:template mode="refine-path" match="m:step">
         <xsl:apply-templates mode="#current"/>
     </xsl:template>
     

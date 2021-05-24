@@ -4,10 +4,46 @@
     stylesheet="docs-metapath.xsl"
     xmlns:m="http://csrc.nist.gov/ns/oscal/metaschema/1.0">
 <!-- Tests path-aware element name prefixing -->
+    <x:scenario label="alternative match">
+        <x:call function="m:any-match">
+            <x:param name="context-path" as="xs:string">elem1</x:param>
+            <x:param name="target-path"  as="xs:string">elem1 | elem2</x:param>
+        </x:call>
+        <x:expect label="matching" select="true()"/>
+    </x:scenario>
+    <x:scenario label="Difficult match">
+        <x:call function="m:any-match">
+            <x:param name="context-path" as="xs:string">abc/elem1</x:param>
+            <x:param name="target-path"  as="xs:string">abc/(elem1 | elem2)</x:param>
+        </x:call>
+        <x:expect label="matching" select="true()"/>
+    </x:scenario>
+    <x:scenario label="Breaking up a union">
+        <x:call function="m:express-targets">
+            <x:param name="expr" as="xs:string">abc/(elem1 | elem2)</x:param>
+        </x:call>
+        <x:expect label="target" select="'abc/elem1','abc/elem2'"/>
+    </x:scenario>
+    
+    <!-- trying /EVERYTHING/deep1/deep2/deep3/@count on /EVERYTHING/deep1/deep2/deep3/@count: 'false'   -->
+    <x:scenario label="rl match">
+        <x:call function="m:match-paths">
+            <x:param name="context-path" as="xs:string">/EVERYTHING/deep1/deep2/deep3/@count</x:param>
+            <x:param name="target-path"  as="xs:string">/EVERYTHING/deep1/deep2/deep3/@count</x:param>
+        </x:call>
+        <x:expect label="matching" select="true()"/>
+    </x:scenario>
     <x:scenario label="simple match">
         <x:call function="m:match-paths">
             <x:param name="context-path" as="xs:string">element</x:param>
             <x:param name="target-path"  as="xs:string">element</x:param>
+        </x:call>
+        <x:expect label="matching" select="true()"/>
+    </x:scenario>
+    <x:scenario label="absolute path match">
+        <x:call function="m:match-paths">
+            <x:param name="context-path" as="xs:string">a/b/c/d</x:param>
+            <x:param name="target-path"  as="xs:string">/a/b/c/d</x:param>
         </x:call>
         <x:expect label="matching" select="true()"/>
     </x:scenario>

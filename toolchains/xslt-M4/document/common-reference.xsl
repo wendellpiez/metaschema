@@ -7,38 +7,80 @@
    xmlns:m="http://csrc.nist.gov/ns/oscal/metaschema/1.0"
    exclude-result-prefixes="#all">
    
+   <!-- Silencing constraint allocation logic -->
    <!--<xsl:import href="../metapath/docs-metapath.xsl"/>-->
    
-  
-   
    <xsl:template mode="produce-matching-constraints" match="constraint">
-      <!-- $applying-to is the node to which the constraint applies (or not) - 
-           by default the parent of the constraint
-           but the template will be called for all the constraint's descendants as well -->
-      <xsl:param name="applying-to" select="parent::*"/>
-      <xsl:variable name="constraints" select=".//allowed-values | .//matches | .//has-cardinality | .//is-unique | .//index-has-key | .//index"/>
-      <xsl:where-populated>
-<!--      <details>
-         <summary>Constraints</summary>
-         <xsl:apply-templates mode="produce-matching-constraints" select="$constraints">
-            <xsl:with-param name="applying-to" select="$applying-to"/>
-         </xsl:apply-templates>
-      </details>-->
--->      </xsl:where-populated>
-      
+      <xsl:apply-templates mode="produce" select="contraint"/>
    </xsl:template>
    
+   <!--<xsl:template mode="produce-matching-constraints" match="constraint">
+      <!-\- $applying-to is the node to which the constraint applies (or not) - 
+           by default the parent of the constraint
+           but the template will be called for all the constraint's descendants as well -\->
+      <xsl:param name="applying-to" tunnel="true" required="true"/>
+      <!-\- b/c of intermediate 'requires' steps, we go straight to descendants -\->
+      <xsl:variable name="constraints" select="descendant::allowed-values | descendant::matches | descendant::has-cardinality | descendant::is-unique | descendant::index-has-key | descendant::index | descendant::expect"/>
+      <xsl:variable name="matching-constraints-description" as="element()*">
+         <xsl:apply-templates mode="produce-matching-constraints" select="$constraints"/>
+      </xsl:variable>
+      <xsl:if test="exists($matching-constraints-description)">
+         <details>
+            <summary>Constraints</summary>
+            <xsl:sequence select="$matching-constraints-description"/>
+         </details>
+      </xsl:if>
+   </xsl:template>-->
+   
    <!--<xsl:template match="constraint//*" mode="produce-matching-constraints" expand-text="true">
-      <xsl:param name="applying-to" select="parent::*"/>
-      <xsl:variable name="apply-to-path" select="$applying-to/@_tree-xml-id/m:express-targets(.)"/>
-      <xsl:variable name="target-path" select="(ancestor::constraint/parent::*/@_tree-xml-id, (@target,'.')[1]) => string-join('/')"/>
+      <xsl:param name="applying-to" as="element()" tunnel="true" required="true"/>
+      
+      <!-\-<xsl:message expand-text="true">matching '{ name() }'</xsl:message>-\->
+      
+      <xsl:variable name="apply-to-path" select="$applying-to/@_tree-xml-id/string(.)"/>
+      <!-\- extra wrapper parens in case target has a|b|c we want path/to/(a|b|c)    -\->
+      <!-\-<xsl:variable name="given-target" select="'(' || (@target,'.')[1] || ')'"/>-\->
+      <xsl:variable name="given-target" select="(@target,'.')[1]"/>
 
-      <xsl:if test="m:any-match($apply-to-path, $target-path)">
+      <!-\- the constraint wrappers' parents are elements, attributes, objects, strings ... all addressed via @_tree-xml-id for these purposes -\->
+      <xsl:variable name="target-path" select="(ancestor::constraint/parent::*/@_tree-xml-id, $given-target) => string-join('/')"/>
+
+        
+      <xsl:message expand-text="true">trying '{ $target-path }' on '{ $apply-to-path}': '{ m:match-paths($apply-to-path,$target-path) }'</xsl:message>
+      <xsl:if test="m:match-paths($apply-to-path, $target-path)">
          <xsl:apply-templates select="." mode="produce"/>
       </xsl:if>
    </xsl:template>-->
    
-   <xsl:template match="constraint" mode="produce" expand-text="true">
+   <xsl:template match="description" mode="produce">
+      <xsl:where-populated>
+         <p class="description">
+            <xsl:apply-templates mode="cast-to-html"/>
+         </p>
+      </xsl:where-populated>
+      <xsl:on-empty>
+         <xsl:message expand-text="true">Empty description on { name(..) }</xsl:message>
+      </xsl:on-empty>
+   </xsl:template>
+   
+   <xsl:template match="remarks" mode="produce">
+      <div class="remarks{ @class ! (' ' || .)}">
+         <xsl:if test="@class='in-use'"><p class="nb">(In use)</p></xsl:if>
+         <xsl:apply-templates mode="cast-to-html"/>
+      </div>
+   </xsl:template>
+   
+   <!-- Cast to XHTML namespace -->
+   <xsl:template match="description//* | remarks//*" mode="cast-to-html">
+      <xsl:element name="{ local-name() }" namespace="http://www.w3.org/1999/xhtml">
+         <xsl:apply-templates mode="#current"/>
+      </xsl:element>
+   </xsl:template>
+   
+   <!-- Shouldn't match in this mode but just in case. -->
+   <xsl:template match="constraint" mode="produce"/>
+   
+   <!--<xsl:template match="constraint" mode="produce" expand-text="true">
       <xsl:variable name="constraints" select=".//allowed-values | .//matches | .//has-cardinality | .//is-unique | .//index-has-key | .//index"/>
       <xsl:for-each-group select="$constraints" group-by="true()">
          <details  open="open" class="constraint-set">
@@ -46,7 +88,7 @@
             <xsl:apply-templates select="current-group()" mode="#current"/>
          </details>
       </xsl:for-each-group>
-   </xsl:template>
+   </xsl:template>-->
    
    <xsl:template mode="produce" priority="2" match="allowed-values" expand-text="true">
       <xsl:variable name="enums" select="enum"/>
@@ -169,31 +211,6 @@
             </xsl:for-each>
          </p>
       </div>
-   </xsl:template>
-   
-   <xsl:template match="description" mode="produce">
-      <xsl:where-populated>
-         <p class="description">
-            <xsl:apply-templates mode="cast-to-html"/>
-         </p>
-      </xsl:where-populated>
-      <xsl:on-empty>
-         <xsl:message expand-text="true">Empty description on { name(..) }</xsl:message>
-      </xsl:on-empty>
-   </xsl:template>
-   
-   <xsl:template match="remarks" mode="produce">
-      <div class="remarks{ @class ! (' ' || .)}">
-         <xsl:if test="@class='in-use'"><p class="nb">(In use)</p></xsl:if>
-         <xsl:apply-templates mode="cast-to-html"/>
-      </div>
-   </xsl:template>
-   
-   <!-- Cast to XHTML namespace -->
-   <xsl:template match="description//* | remarks//*" mode="cast-to-html">
-      <xsl:element name="{ local-name() }" namespace="http://www.w3.org/1999/xhtml">
-         <xsl:apply-templates mode="#current"/>
-      </xsl:element>
    </xsl:template>
    
    <!-- XXX consolidate this w/ JSON code? -->

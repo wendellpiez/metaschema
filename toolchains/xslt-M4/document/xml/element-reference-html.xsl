@@ -73,7 +73,7 @@
       </section>
    </xsl:template>
    
-   <xsl:template match="formal-name | description | remarks | constraint"/>
+   <xsl:template match="formal-name | description | remarks"/>
    
    <xsl:template match="*" mode="produce" expand-text="true">
       <xsl:param tunnel="true" name="constraints" select="()"/>
@@ -102,8 +102,9 @@
          <xsl:variable name="potential-constraints" select="$constraints,constraint"/>
          
          <!-- Visiting the constraints passed down from above, with $apply-to as the node applying -->
+         <!-- mode 'produce-matching-constraints' is in ../common-reference.xsl        -->
          <xsl:apply-templates select="$potential-constraints" mode="produce-matching-constraints">
-            <xsl:with-param name="applying-to" select="."/>
+            <xsl:with-param name="applying-to" select="." tunnel="true"/>
          </xsl:apply-templates>
          
          <xsl:if test="exists(remarks)">
