@@ -11,8 +11,15 @@
    <!--<xsl:import href="../metapath/docs-metapath.xsl"/>-->
    
    <xsl:template mode="produce-matching-constraints" match="constraint">
-      <xsl:apply-templates mode="produce" select="contraint"/>
+      <xsl:apply-templates mode="produce-constraint"/>
    </xsl:template>
+   
+   <!--<xsl:template match="require" mode="produce">
+      <div class="constraint-set">
+         <p>When <code><xsl:value-of select="@when"/></code></p>
+         <xsl:apply-templates mode="#current"/>
+      </div>
+   </xsl:template>-->
    
    <!--<xsl:template mode="produce-matching-constraints" match="constraint">
       <!-\- $applying-to is the node to which the constraint applies (or not) - 
@@ -30,9 +37,9 @@
             <xsl:sequence select="$matching-constraints-description"/>
          </details>
       </xsl:if>
-   </xsl:template>-->
+   </xsl:template>
    
-   <!--<xsl:template match="constraint//*" mode="produce-matching-constraints" expand-text="true">
+   <xsl:template match="constraint//*" mode="produce-matching-constraints" expand-text="true">
       <xsl:param name="applying-to" as="element()" tunnel="true" required="true"/>
       
       <!-\-<xsl:message expand-text="true">matching '{ name() }'</xsl:message>-\->
@@ -90,7 +97,7 @@
       </xsl:for-each-group>
    </xsl:template>-->
    
-   <xsl:template mode="produce" priority="2" match="allowed-values" expand-text="true">
+   <xsl:template mode="produce-constraint" priority="2" match="allowed-values" expand-text="true">
       <xsl:variable name="enums" select="enum"/>
       <div class="constraint">
          <p><span class="cnstr-tag">Allowed value{ 's'[count($enums) gt 1] }</span>
@@ -119,11 +126,11 @@
       <span class="path">{ ancestor::constraint/../@_tree-xml-id }</span>
    </xsl:template>
    
-   <xsl:template match="allowed-values/enum" mode="produce">
+   <xsl:template match="allowed-values/enum" mode="produce-constraint">
       <li><strong><xsl:value-of select="@value"/></strong><xsl:if test="node()">: <xsl:apply-templates mode="#current"/></xsl:if></li>     
    </xsl:template>
    
-   <xsl:template mode="produce" priority="2" match="matches[@regex]" expand-text="true">
+   <xsl:template mode="produce-constraint" priority="2" match="matches[@regex]" expand-text="true">
       <xsl:variable name="target" select="@target[not(.=('.','value()'))]"/>
       <div class="constraint">
          <p>
@@ -135,7 +142,7 @@
    </xsl:template>
    
    
-   <xsl:template mode="produce" priority="2" match="matches[@datatype]" expand-text="true">
+   <xsl:template mode="produce-constraint" priority="2" match="matches[@datatype]" expand-text="true">
       <div class="constraint">
          <p>
             <span class="usa-tag">constraint</span>
@@ -145,7 +152,7 @@
       </div>
    </xsl:template>
    
-   <xsl:template mode="produce" priority="2" match="is-unique">
+   <xsl:template mode="produce-constraint" priority="2" match="is-unique">
       <xsl:variable name="target" select="@target[not(.=('.','value()'))]"/>
       <div class="constraint">
          <p>
@@ -157,7 +164,7 @@
       </div>
    </xsl:template>
    
-   <xsl:template mode="produce" priority="2" match="has-cardinality" expand-text="true">
+   <xsl:template mode="produce-constraint" priority="2" match="has-cardinality" expand-text="true">
       <div class="constraint">
          <p>
             <span class="usa-tag">constraint</span>
@@ -172,7 +179,7 @@
       </div>
    </xsl:template>
    
-   <xsl:template mode="produce" priority="2" match="index-has-key" expand-text="true">
+   <xsl:template mode="produce-constraint" priority="2" match="index-has-key" expand-text="true">
       <xsl:variable name="target" select="@target[not(.=('.','value()'))]"/>
       <div class="constraint">
          <p>
@@ -192,7 +199,7 @@
       </div>
    </xsl:template>
    
-   <xsl:template mode="produce" priority="2" match="index" expand-text="true">
+   <xsl:template mode="produce-constraint" priority="2" match="index" expand-text="true">
       <div class="constraint">
          <p>
             <span class="usa-tag">constraint</span>
