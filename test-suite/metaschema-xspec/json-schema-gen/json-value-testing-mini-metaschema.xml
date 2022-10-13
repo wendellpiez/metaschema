@@ -39,35 +39,7 @@
             <field ref="constrained-sortof"/>
         </model>
     </define-assembly>
-    
-<!-- for field someties-requiring the enumeration should appear in the JSON Schema
-     only if the datatype requires at least one character (is not 'nullable') -->
-    <!--<define-field 
-        as-type="token"
-        name="value-required-since-token">
-        <formal-name>Field with required value property</formal-name>
-        <description>The value key here must be required iff the datatype requires a character;
-            permitting an empty string, the `nar-value` field should be optional (because 'nullable').</description>
-        <json-value-key>rst-value</json-value-key>
-        <define-flag name="some">
-            <formal-name>Some Flag</formal-name>
-            <description>Some flag some flag some flag.</description>
-        </define-flag>
-    </define-field>-->
-    
-    <!--<define-field 
-        as-type="token"
-        name="value-not-required-since-string">
-        <formal-name>Field with optional value property</formal-name>
-        <description>The value key here must be optional since a string value can be empty (""),
-            providing for a syntax optimization in JSON representations (the value property can be dropped).</description>
-        <json-value-key>nrs-value</json-value-key>
-        <define-flag name="some">
-            <formal-name>Some Flag</formal-name>
-            <description>Some flag some flag some flag.</description>
-        </define-flag>
-    </define-field>-->
-    <!--
+        <!--
     fields to define
     
     unconstrained
@@ -108,14 +80,14 @@
             <formal-name>Some Flag</formal-name>
             <description>Some flag some flag some flag.</description>
         </define-flag>
-        <!--<constraint>
+        <constraint>
             <allowed-values target="." allow-other="yes">
                 <enum value="one"/>
                 <enum value="two"/>
                 <enum value="three"/>
                 <enum value="four"/>
             </allowed-values>
-        </constraint>-->
+        </constraint>
     </define-field>
     
     <!-- field constrained-closed has allowed values, exclusively - the 'normal' case -->
@@ -172,7 +144,7 @@
             <description>Some flag some flag some flag.</description>
         </define-flag>
         <constraint>
-            <allowed-values target=".[not(false())]" allow-other="no">
+            <allowed-values target=".[not(false())]" allow-other="yes">
                 <enum value="one"/>
                 <enum value="two"/>
                 <enum value="three"/>
@@ -181,6 +153,35 @@
         </constraint>
     </define-field>
     
+
+
+    <!-- for field someties-requiring the enumeration should appear in the JSON Schema
+     only if the datatype requires at least one character (is not 'nullable') -->
+    <!--<define-field 
+        as-type="token"
+        name="value-required-since-token">
+        <formal-name>Field with required value property</formal-name>
+        <description>The value key here must be required iff the datatype requires a character;
+            permitting an empty string, the `nar-value` field should be optional (because 'nullable').</description>
+        <json-value-key>rst-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+    </define-field>-->
+    
+    <!--<define-field 
+        as-type="token"
+        name="value-not-required-since-string">
+        <formal-name>Field with optional value property</formal-name>
+        <description>The value key here must be optional since a string value can be empty (""),
+            providing for a syntax optimization in JSON representations (the value property can be dropped).</description>
+        <json-value-key>nrs-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+    </define-field>-->
     
     </METASCHEMA>
 
