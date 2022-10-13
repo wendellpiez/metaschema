@@ -1,0 +1,8 @@
+{
+    "root": {
+        "unconstrained": {
+            "some": "a",
+            "token-value": "anything"
+        }
+    }
+}

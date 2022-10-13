@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="metaschema-author.css"?>
+<METASCHEMA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://csrc.nist.gov/ns/oscal/metaschema/1.0 ${pdu}/build/metaschema/schema/xml/metaschema.xsd"
+ xmlns="http://csrc.nist.gov/ns/oscal/metaschema/1.0" abstract="no">
+    <schema-name>JSON value testing mini metaschema</schema-name>
+    <schema-version>0.1</schema-version>
+    <short-name>oscal-value-testing-mini</short-name>
+    <namespace>http://csrc.nist.gov/ns/oscal/1.0</namespace>
+    <json-base-uri>http://csrc.nist.gov/ns/oscal</json-base-uri>
+    
+    
+<!--
+        XML looks like this:
+        
+        valid:
+        <root>
+        </root>
+             
+
+        not valid:
+        <root>
+             <value-required-since-token/>
+             <always-enumerated>ae5</always-enumerated>
+             <always-enumerated/>
+        </root>
+             
+    
+    -->
+    <define-assembly name="root">
+        <formal-name>Root</formal-name>
+        <description>Root root root.</description>
+        <root-name>root</root-name>
+        <model>
+            <field ref="unconstrained"/>
+            <field ref="constrained-open"/>
+            <field ref="constrained-closed"/>
+            <field ref="constrained-narrow"/>
+            <field ref="constrained-sortof"/>
+        </model>
+    </define-assembly>
+    
+<!-- for field someties-requiring the enumeration should appear in the JSON Schema
+     only if the datatype requires at least one character (is not 'nullable') -->
+    <!--<define-field 
+        as-type="token"
+        name="value-required-since-token">
+        <formal-name>Field with required value property</formal-name>
+        <description>The value key here must be required iff the datatype requires a character;
+            permitting an empty string, the `nar-value` field should be optional (because 'nullable').</description>
+        <json-value-key>rst-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+    </define-field>-->
+    
+    <!--<define-field 
+        as-type="token"
+        name="value-not-required-since-string">
+        <formal-name>Field with optional value property</formal-name>
+        <description>The value key here must be optional since a string value can be empty (""),
+            providing for a syntax optimization in JSON representations (the value property can be dropped).</description>
+        <json-value-key>nrs-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+    </define-field>-->
+    <!--
+    fields to define
+    
+    unconstrained
+        no values enumerated
+    constrained-open
+      - allow-others='yes', values enumerated
+    constrained-closed
+      - allow-others='no', values enumerated
+    constrained-default
+      - same as constrained-closed
+    constrained-narrow
+      - allow-others='no', values enumerated on *some* cases
+    constrained-sortof
+      - allow-others='yes', values enumerated on *some* cases
+    
+    -->
+    
+    <define-field 
+        as-type="token"
+        name="unconstrained">
+        <formal-name>Unconstrained</formal-name>
+        <description>A field whose value is constrained only by its nominal datatype, 'token'.</description>
+        <json-value-key>token-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+    </define-field>
+    
+    <!-- field constrained-open has allowed values, but allow-other="yes" so they are not exclusive -->
+    <define-field 
+        as-type="token"
+        name="constrained-open">
+        <formal-name>Constrained open</formal-name>
+        <description>Because allow-other is 'yes' no enumeration can be given in the JSON Schema.</description>
+        <json-value-key>token-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+        <!--<constraint>
+            <allowed-values target="." allow-other="yes">
+                <enum value="one"/>
+                <enum value="two"/>
+                <enum value="three"/>
+                <enum value="four"/>
+            </allowed-values>
+        </constraint>-->
+    </define-field>
+    
+    <!-- field constrained-closed has allowed values, exclusively - the 'normal' case -->
+    <define-field 
+        as-type="token"
+        name="constrained-closed">
+        <formal-name>Constrained closed</formal-name>
+        <description>Because allow-other is 'no' an enumeration can be given in the JSON Schema.</description>
+        <json-value-key>token-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+        <constraint>
+            <allowed-values target="." allow-other="no">
+                <enum value="one"/>
+                <enum value="two"/>
+                <enum value="three"/>
+                <enum value="four"/>
+            </allowed-values>
+        </constraint>
+    </define-field>
+    
+    <!-- field constrained-narrow has allowed values, exclusively, but only on a subset of scoped elements -->
+    <define-field 
+        as-type="token"
+        name="constrained-narrow">
+        <formal-name>Constrained narrow</formal-name>
+        <description>Although allow-other is 'no' an enumeration can't be given in the JSON Schema since it targets a qualified set (only a subset) of the elements in scope.</description>
+        <json-value-key>token-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+        <constraint>
+            <allowed-values target=".[not(false())]" allow-other="no">
+                <enum value="one"/>
+                <enum value="two"/>
+                <enum value="three"/>
+                <enum value="four"/>
+            </allowed-values>
+        </constraint>
+    </define-field>
+    
+    <!-- field constrained-sortof is like constrain-narrow, but allow-other is 'yes' -->
+    <define-field 
+        as-type="token"
+        name="constrained-sortof">
+        <formal-name>Constrained, sort of</formal-name>
+        <description>Although allow-other is 'no' an enumeration can't be given in the JSON Schema since it targets a qualified set (only a subset) of the elements in scope.</description>
+        <json-value-key>token-value</json-value-key>
+        <define-flag name="some">
+            <formal-name>Some Flag</formal-name>
+            <description>Some flag some flag some flag.</description>
+        </define-flag>
+        <constraint>
+            <allowed-values target=".[not(false())]" allow-other="no">
+                <enum value="one"/>
+                <enum value="two"/>
+                <enum value="three"/>
+                <enum value="four"/>
+            </allowed-values>
+        </constraint>
+    </define-field>
+    
+    
+    </METASCHEMA>
+

@@ -1,0 +1,8 @@
+{
+    "root": {
+        "constrained-closed": {
+            "some": "c",
+            "token-value": "FIVE"
+        }
+    }
+}

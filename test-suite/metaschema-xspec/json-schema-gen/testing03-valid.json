@@ -1,0 +1,24 @@
+{
+    "root": {
+        "unconstrained": {
+            "some": "a",
+            "token-value": "any"
+        },
+        "constrained-open": {
+            "some": "b",
+            "token-value": "one"
+        },
+        "constrained-closed": {
+            "some": "c",
+            "token-value": "three"
+        },
+        "constrained-narrow": {
+            "some": "d",
+            "token-value": "three"
+        },
+        "constrained-sortof": {
+            "some": "e",
+            "token-value": "four"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "root": {
+        "unconstrained": {
+            "some": "a",
+            "token-value": "any OLD"
+        },
+        "constrained-open": {
+            "some": "b",
+            "token-value": "STRING value"
+        }
+    }
+}
