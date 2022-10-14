@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns="http://www.w3.org/2005/xpath-functions">
+   <string key="$schema">http://json-schema.org/draft-07/schema#</string>
+   <string key="$id">http://csrc.nist.gov/ns/oscal/0.1/oscal-value-testing-mini-schema.json</string>
+   <string key="$comment">JSON value testing mini metaschema: JSON Schema</string>
+   <string key="type">object</string>
+   <map key="definitions">
+      <map key="oscal-value-testing-mini-oscal-value-testing-mini:root">
+         <string key="title">Root</string>
+         <string key="description">Root root root.</string>
+         <string key="$id">#assembly_oscal-value-testing-mini_root</string>
+         <string key="type">object</string>
+         <map key="properties">
+            <map key="unconstrained">
+               <string key="$ref">#field_oscal-value-testing-mini_unconstrained</string>
+            </map>
+            <map key="constrained-open">
+               <string key="$ref">#field_oscal-value-testing-mini_constrained-open</string>
+            </map>
+            <map key="constrained-closed">
+               <string key="$ref">#field_oscal-value-testing-mini_constrained-closed</string>
+            </map>
+            <map key="constrained-narrow">
+               <string key="$ref">#field_oscal-value-testing-mini_constrained-narrow</string>
+            </map>
+            <map key="constrained-sortof">
+               <string key="$ref">#field_oscal-value-testing-mini_constrained-sortof</string>
+            </map>
+         </map>
+         <boolean key="additionalProperties">false</boolean>
+      </map>
+      <map key="oscal-value-testing-mini-oscal-value-testing-mini:unconstrained">
+         <string key="title">Unconstrained</string>
+         <string key="description">A field whose value is constrained only by its nominal datatype, 'token'.</string>
+         <string key="$id">#field_oscal-value-testing-mini_unconstrained</string>
+         <string key="type">object</string>
+         <map key="properties">
+            <map key="some">
+               <string key="title">Some Flag</string>
+               <string key="description">Some flag some flag some flag.</string>
+               <string key="$ref">#/definitions/StringDatatype</string>
+            </map>
+            <map key="token-value">
+               <string key="$ref">#/definitions/TokenDatatype</string>
+            </map>
+         </map>
+         <array key="required">
+            <string>token-value</string>
+         </array>
+         <boolean key="additionalProperties">false</boolean>
+      </map>
+      <map key="oscal-value-testing-mini-oscal-value-testing-mini:constrained-open">
+         <string key="title">Constrained open</string>
+         <string key="description">Because allow-other is 'yes' no enumeration can be given in the JSON Schema.</string>
+         <string key="$id">#field_oscal-value-testing-mini_constrained-open</string>
+         <string key="type">object</string>
+         <map key="properties">
+            <map key="some">
+               <string key="title">Some Flag</string>
+               <string key="description">Some flag some flag some flag.</string>
+               <string key="$ref">#/definitions/StringDatatype</string>
+            </map>
+            <map key="token-value">
+               <string key="$ref">#/definitions/TokenDatatype</string>
+            </map>
+         </map>
+         <array key="required">
+            <string>token-value</string>
+         </array>
+         <boolean key="additionalProperties">false</boolean>
+      </map>
+      <map key="oscal-value-testing-mini-oscal-value-testing-mini:constrained-closed">
+         <string key="title">Constrained closed</string>
+         <string key="description">Because allow-other is 'no' an enumeration can be given in the JSON Schema.</string>
+         <string key="$id">#field_oscal-value-testing-mini_constrained-closed</string>
+         <string key="type">object</string>
+         <map key="properties">
+            <map key="some">
+               <string key="title">Some Flag</string>
+               <string key="description">Some flag some flag some flag.</string>
+               <string key="$ref">#/definitions/StringDatatype</string>
+            </map>
+            <map key="token-value">
+               <array key="allOf">
+                  <map>
+                     <string key="$ref">#/definitions/TokenDatatype</string>
+                  </map>
+                  <map>
+                     <array key="enum">
+                        <string>one</string>
+                        <string>two</string>
+                        <string>three</string>
+                        <string>four</string>
+                     </array>
+                  </map>
+               </array>
+            </map>
+         </map>
+         <array key="required">
+            <string>token-value</string>
+         </array>
+         <boolean key="additionalProperties">false</boolean>
+      </map>
+      <map key="oscal-value-testing-mini-oscal-value-testing-mini:constrained-narrow">
+         <string key="title">Constrained narrow</string>
+         <string key="description">Although allow-other is 'no' an enumeration can't be given in the JSON Schema since it targets a qualified set (only a subset) of the elements in scope.</string>
+         <string key="$id">#field_oscal-value-testing-mini_constrained-narrow</string>
+         <string key="type">object</string>
+         <map key="properties">
+            <map key="some">
+               <string key="title">Some Flag</string>
+               <string key="description">Some flag some flag some flag.</string>
+               <string key="$ref">#/definitions/StringDatatype</string>
+            </map>
+            <map key="token-value">
+               <string key="$ref">#/definitions/TokenDatatype</string>
+            </map>
+         </map>
+         <array key="required">
+            <string>token-value</string>
+         </array>
+         <boolean key="additionalProperties">false</boolean>
+      </map>
+      <map key="oscal-value-testing-mini-oscal-value-testing-mini:constrained-sortof">
+         <string key="title">Constrained, sort of</string>
+         <string key="description">Although allow-other is 'no' an enumeration can't be given in the JSON Schema since it targets a qualified set (only a subset) of the elements in scope.</string>
+         <string key="$id">#field_oscal-value-testing-mini_constrained-sortof</string>
+         <string key="type">object</string>
+         <map key="properties">
+            <map key="some">
+               <string key="title">Some Flag</string>
+               <string key="description">Some flag some flag some flag.</string>
+               <string key="$ref">#/definitions/StringDatatype</string>
+            </map>
+            <map key="token-value">
+               <string key="type">string</string>
+            </map>
+         </map>
+         <array key="required">
+            <string>token-value</string>
+         </array>
+         <boolean key="additionalProperties">false</boolean>
+      </map>
+      <map key="StringDatatype">
+         <string key="type">string</string>
+         <string key="pattern">^\S(.*\S)?$</string>
+      </map>
+      <map key="TokenDatatype">
+         <string key="type">string</string>
+         <string key="pattern">^(\p{L}|_)(\p{L}|\p{N}|[.\-_])*$</string>
+      </map>
+   </map>
+   <map key="properties">
+      <map key="root">
+         <string key="$ref">#assembly_oscal-value-testing-mini_root</string>
+      </map>
+   </map>
+   <array key="required">
+      <string>root</string>
+   </array>
+   <boolean key="additionalProperties">false</boolean>
+   <number key="maxProperties">1</number>
+</map>
